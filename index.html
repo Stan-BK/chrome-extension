@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body{
+      height: 3000px;
+    }
+    div {
+      position: fixed;
+      width: 300px;
+      height: 200px;
+      /* visibility: hidden; */
+      background-color: #ddd;
+      z-index: 9999999;
+      -moz-user-modify: read-write-plaintext-only;
+      -webkit-user-modify: read-write-plaintext-only;
+      -o-user-modify: read-write-plaintext-only;
+      outline: none;
+      box-sizing: border-box;
+      border: 1px solid #666;
+      border-width: 20px 5px 5px;
+      padding: 2px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div contenteditable="true"></div>
+  <script>
+    var div = document.getElementsByTagName('div')[0]
+    div.addEventListener('paste', function(e) {
+      console.log('paste')
+    })
+    div.addEventListener('input', function() {
+      console.log('input')
+    })
+    div.addEventListener('mousedown', function(e) {
+      const { offsetX, offsetY } = e
+      console.log(e)
+      if (offsetY > 0) {
+        return
+      }
+      div.style.transition = 'none'
+      document.addEventListener('mousemove', mouseMove)
+      document.addEventListener('mouseup', mouseUp)
+
+      function mouseMove(e) {
+        if (e.clientY < 0 || e.clientY > innerHeight - 20) {
+          return
+        }
+        console.log(e)
+        div.style.left = e.clientX - offsetX + 'px'
+        div.style.top = e.clientY + offsetY + 'px'
+      }
+      function mouseUp() {
+        const { left, width } = div.getBoundingClientRect()
+        const leftOffset = window.innerWidth - left
+        const topOffset = window.innerHeight - top
+        if (leftOffset < width) {
+          div.style.left = window.innerWidth - 20 + 'px'
+        } else if (left < 0) {
+          div.style.left = -width + 20 + 'px'
+        }
+        div.style.transition = '.2s'
+        document.removeEventListener('mousemove', mouseMove)
+        document.removeEventListener('mouseup', mouseUp)
+      }
+    })
+  </script>
+</body>
+</html>
