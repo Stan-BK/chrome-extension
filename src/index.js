@@ -1,32 +1,30 @@
 const Elements = document.getElementsByTagName('*')
 const path = []
+const outlineStyle = '1px inset #fff'
 Array.from(Elements).forEach(element => {
-  element.addEventListener('mouseenter', moveIn.bind(element))
-  element.addEventListener('mouseleave', moveOut.bind(element))
+  element.addEventListener('mouseenter', moveIn)
+  element.addEventListener('mouseleave', moveOut)
 })
-function moveIn() {
-  const element = this
-  let parent = path[path.length - 1]
+function moveIn(e) {
+  const element = e.target
+  const lastIndex = path.length - 1
+  const parent = path[lastIndex]
   parent && (parent.element.style.outline = parent?.otline)
-
-  let otline = getComputedStyle(element).getPropertyValue('outline')
+  
+  const otline = getComputedStyle(element).getPropertyValue('outline')
   path.push({
     element,
     otline
   })
 
-  element.style.outline = '1px solid #fff';
+  element.style.outline = outlineStyle
 }
-function moveOut() {
-  const element = this
-  let parent = path[path.length - 1]
-  parent && (parent.element.style.outline = '1px solid #fff')
-  path.some((elem, index) => {
-    if (elem === element) {
-      path.splice(index, 1)
-      return true
-    }
-  })
-
+function moveOut(e) {
+  const element = e.target
+  const lastIndex = path.length - 1
+  const otline = path.splice(lastIndex, 1)[0].otline
+  
+  const parent = path[lastIndex - 1]
+  parent && (parent.element.style.outline = outlineStyle)
   element.style.outline = otline;
 }
