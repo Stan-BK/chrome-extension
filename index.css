@@ -1,0 +1,25 @@
+.editTransition {
+  transition: outline .6s;
+}
+body {
+  background-color: #000;
+}
+.contentDiv {
+  position: fixed;
+  width: 300px;
+  height: 200px;
+  background-color: #ddd;
+  z-index: 9999999;
+  top: 20px;
+  left: 10px;
+  -moz-user-modify: read-write-plaintext-only;
+  -webkit-user-modify: read-write-plaintext-only;
+  -o-user-modify: read-write-plaintext-only;
+  outline: none;
+  box-sizing: border-box;
+  border: 1px solid #666;
+  border-width: 20px 5px 5px;
+  padding: 2px;
+  border-radius: 5px;
+  overflow: auto;
+}
